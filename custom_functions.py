@@ -93,13 +93,13 @@ def MySolve(f,x0,df,tol,maxit):
     
     ek1 = linalg.norm(x1 - x0)
     rk = linalg.norm(f(x0))
-    print('Error is %g, Residual is %g' % (ek1,rk))
+    #print('Error is %g, Residual is %g' % (ek1,rk))
     x0 = x1
     
     for i in np.arange(0,maxit):
         J = df(x0)
         if i == maxit-1:
-            converged = False;
+            converged = False
             x = x0
             break
         elif ek1 < tol and rk < tol:
@@ -112,7 +112,7 @@ def MySolve(f,x0,df,tol,maxit):
             ek1 = np.linalg.norm(x1 - x0)
             rk = np.linalg.norm(f(x0))
             x0 = x1
-            print('Error is %g, Residual is %g' % (ek1,rk))
+            #print('Error is %g, Residual is %g' % (ek1,rk))
 
     if ek1 < tol and rk < tol:
         converged = True
