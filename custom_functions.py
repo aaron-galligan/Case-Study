@@ -89,6 +89,9 @@ def MySolve(f,x0,df,tol,maxit):
         x0 = np.expand_dims(x0, axis=1)
     
     J = df(x0)
+    if abs(np.linalg.det(J)) < 0.01:
+        print('matrix is singular')
+        return x0, False, J
     x1 = x0 - np.matmul(np.linalg.inv(J),f(x0))
     
     ek1 = linalg.norm(x1 - x0)
@@ -108,6 +111,9 @@ def MySolve(f,x0,df,tol,maxit):
             x = x0
             break
         else:
+            if abs(np.linalg.det(J)) < 0.01:
+                print('matrix is singular')
+                return x0, False, J
             x1 = x0 - np.matmul(np.linalg.inv(J),f(x0))
             ek1 = np.linalg.norm(x1 - x0)
             rk = np.linalg.norm(f(x0))
@@ -227,7 +233,7 @@ def MyTrackCurve(userf,userdf,y0,ytan,**kwargs):
         
         yk,converged,J = MySolve(F,yj,df,tol,maxit)
         while converged == 0:
-            s = np.max(s/2,1e-8)
+            s = np.max([s/2,1e-8])
             yj = y0 + s*ytan
             fj = lambda y: np.matmul(np.transpose(ytan),(y - yj))
             F = lambda y: np.concatenate((userf(y),fj(y)),axis=0)
