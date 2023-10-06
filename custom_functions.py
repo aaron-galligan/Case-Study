@@ -226,6 +226,7 @@ def MyTrackCurve(userf,userdf,y0,ytan,**kwargs):
         F = lambda y: np.concatenate((userf(y),fj(y)),axis=0)
         def df(y):
             J = MyJacobian(fj,y,1e-5)
+            #print(J)
             if J.ndim > 2:
                 J = J.squeeze(axis=2)
             dfout = np.concatenate((userdf(y),J),axis=0)
